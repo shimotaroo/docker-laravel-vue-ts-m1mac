@@ -54,6 +54,12 @@ php artisan key:generate
 npm install
 ```
 
+- Vue-Router（3.5.1）
+- Vuex（3.6.2）
+- Vuetify（2.5.0）
+
+もインストールされる。
+
 ## TSのビルド
 
 appコンテナ内で実行
@@ -61,8 +67,15 @@ appコンテナ内で実行
 ```
 npm run dev
 ```
-コンパイル成功すればOKです。
 
+以下のような出力になればコンパイル成功。
+
+```
+ DONE  Compiled successfully in 7762ms                                              7:01:05 AM
+
+     Asset      Size   Chunks             Chunk Names
+/js/app.js  1.86 MiB  /js/app  [emitted]  /js/app
+```
 
 ## browerSync起動
 

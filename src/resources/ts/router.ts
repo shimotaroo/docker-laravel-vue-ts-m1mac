@@ -4,6 +4,8 @@ import { VueConstructor } from "vue/types/umd"
 
 // ページコンポーネント
 import Top from "./pages/Top.vue"
+import Register from "./pages/auth/Register.vue"
+import Login from "./pages/auth/Login.vue"
 
 Vue.use(VueRouter)
 
@@ -19,11 +21,11 @@ const routes: routerInterface[] = [
   },
   {
     path: "/register",
-    component: Top
+    component: Register
   },
   {
     path: "/login",
-    component: Top
+    component: Login
   }
 ]
 

@@ -1,4 +1,13 @@
-window._ = require('lodash');
+// このファイルはAjax 通信で用いる Axios ライブラリの設定を記述
+
+import { getCookieValue } from './util'
+import Axios, { AxiosStatic } from 'axios'
+
+declare global {
+  interface Window {
+    axios: AxiosStatic
+  }
+}
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -6,9 +15,19 @@ window._ = require('lodash');
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+window.axios = Axios
 
+// window.axios = require('axios');
+
+// Ajaxリクエストであることを示すヘッダーを付与する
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+window.axios.interceptors.request.use(config => {
+  // クッキーからトークンを取り出してヘッダーに添付する
+  config.headers['X-XSRF-TOKEN'] = getCookieValue('XSRF-TOKEN')
+
+  return config
+})
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

@@ -23,6 +23,9 @@ class Kernel extends HttpKernel
 
     /**
      * The application's route middleware groups.
+     * api ミドルウェアグループでは本来、外部のアプリケーションから呼び出されるようなステートレスな Web API（Twitter API や Google Map API などをイメージしてください）が想定されている。
+     * なのでセッションやクッキー、CSRF トークンを扱うミドルウェアが含まれていない。
+     * SPAの場合はフロントからAPIを呼び出す必要があるのでwebに変更する（src/app/Providers/RouteServiceProvider.php参照）
      *
      * @var array
      */

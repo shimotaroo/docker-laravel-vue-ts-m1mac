@@ -79,7 +79,12 @@ export default Vue.extend({
     }
   },
   methods: {
-    register() {
+    async register() {
+      // this.$store.dispach('A/B', data)
+      // store/A.tsというストアのBアクションを呼ぶ。dataを引数として送る
+      await this.$store.dispatch('auth/register', this.registerForm)
+
+      this.$router.push('/')
     }
   }
 })

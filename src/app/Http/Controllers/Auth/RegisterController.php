@@ -74,6 +74,11 @@ class RegisterController extends Controller
 
     /**
      * オーバーライド（src/vendor/laravel/framework/src/Illuminate/Foundation/Auth/RegistersUsers.php）
+     * 登録成功後は登録ユーザーの情報を返す
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
      */
     public function registered(Request $request, $user)
     {

@@ -10,6 +10,8 @@ class RedirectIfAuthenticated
 {
     /**
      * Handle an incoming request.
+     * デフォルトでは/homeのページへのリダイレクトが返却される
+     * ログインユーザー返却 API にリダイレクトするように修正
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -19,7 +21,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect(RouteServiceProvider::HOME);
+            return redirect()->route('user');
         }
 
         return $next($request);

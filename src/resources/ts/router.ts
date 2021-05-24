@@ -1,31 +1,44 @@
 import Vue from "vue"
-import VueRouter from "vue-router"
-import { VueConstructor } from "vue/types/umd"
+import VueRouter, { RouteConfig } from "vue-router"
 
 // ページコンポーネント
 import Top from "./pages/Top.vue"
 import Register from "./pages/auth/Register.vue"
 import Login from "./pages/auth/Login.vue"
 
+//Vuex
+import store from './store'
+
 Vue.use(VueRouter)
 
-interface routerInterface {
-  path: string,
-  component: VueConstructor<Vue>
-}
-
-const routes: routerInterface[] = [
+const routes: Array<RouteConfig> = [
   {
       path: "/",
       component: Top
   },
   {
     path: "/register",
-    component: Register
+    component: Register,
+    // ナビゲーションガード
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/check']) {
+        next('/')
+      } else {
+        next()
+      }
+    }
   },
   {
     path: "/login",
-    component: Login
+    component: Login,
+    // ナビゲーションガード
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/check']) {
+        next('/')
+      } else {
+        next()
+      }
+    }
   }
 ]
 

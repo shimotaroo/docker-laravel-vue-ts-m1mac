@@ -51,4 +51,17 @@ class LoginController extends Controller
     {
         return $user;
     }
+
+    /**
+     * オーバーライド（https://github.com/shimotaroo/docker-laravel-vue-ts-m1mac/blob/main/src/vendor/laravel/framework/src/Illuminate/Foundation/Auth/AuthenticatesUsers.php）
+     * ログアウト処理が成功したことだけが分かればよいのでステータスコード 200 番だけを返却
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        $request->session()->regenerate();
+        return response()->json();
+    }
 }

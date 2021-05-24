@@ -39,6 +39,7 @@ const mutations = {
 // https://vuex.vuejs.org/ja/api/#actions
 // : registerPostでAPIの渡すデータの型定義
 const actions = {
+  // ユーザー登録
   async register (
     context: { commit: Commit },
     payload: {name: string, email: string, password: string, password_confirmation: string }
@@ -48,12 +49,18 @@ const actions = {
     // context.commitでmutationを呼ぶ
     context.commit('setUser', response.data)
   },
+  // ログイン
   async login (
     context: { commit: Commit },
     payload: { email: string, password: string }
     ) {
     const response = await axios.post('/api/login', payload)
     context.commit('setUser', response.data)
+  },
+  // ログアウト
+  async logout (context: { commit: Commit }) {
+    const response = await axios.post('/api/logout')
+    context.commit('setUser', null)
   }
 }
 

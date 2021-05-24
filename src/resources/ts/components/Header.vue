@@ -18,10 +18,8 @@
             <v-icon class="mr-1">mdi-pencil-plus</v-icon>投稿する
           </router-link>
         </v-btn>
-        <v-btn text>
-          <router-link to="/login">
+        <v-btn text @click="logout">
             <v-icon class="mr-1">mdi-account-arrow-right-outline</v-icon>ログアウト
-          </router-link>
         </v-btn>
       </v-toolbar-items>
 
@@ -51,6 +49,12 @@ export default Vue.extend({
     },
     userName() {
       return this.$store.getters['auth/userName']
+    }
+  },
+  methods: {
+    async logout() {
+      await this.$store.dispatch('auth/logout')
+      this.$router.push('/')
     }
   }
 })

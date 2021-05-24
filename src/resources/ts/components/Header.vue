@@ -12,7 +12,20 @@
 
       <v-spacer></v-spacer>
 
-      <v-toolbar-items>
+      <v-toolbar-items v-if="isLogin">
+        <v-btn text>
+          <router-link to="/register">
+            <v-icon class="mr-1">mdi-pencil-plus</v-icon>投稿する
+          </router-link>
+        </v-btn>
+        <v-btn text>
+          <router-link to="/login">
+            <v-icon class="mr-1">mdi-account-arrow-right-outline</v-icon>ログアウト
+          </router-link>
+        </v-btn>
+      </v-toolbar-items>
+
+      <v-toolbar-items v-else>
         <v-btn text>
           <router-link to="/register">
             <v-icon class="mr-1">mdi-account-plus-outline</v-icon>ユーザー登録
@@ -27,3 +40,18 @@
 
     </v-app-bar>
 </template>
+
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  computed: {
+    isLogin() {
+      return this.$store.getters['auth/check']
+    },
+    userName() {
+      return this.$store.getters['auth/userName']
+    }
+  }
+})
+</script>

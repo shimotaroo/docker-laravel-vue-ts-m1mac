@@ -4,15 +4,19 @@ import axios from "axios"
 // Vuexのライブラリからcommit型の型情報をimportする
 import { Commit } from "vuex"
 
-interface authState {
-  user: object | null
-}
-
-interface registerPost {
-  name: string
+interface user {
+  name: string,
   email: string,
   password: string,
-  password_confirmation: string
+  password_confirmation: string,
+  email_verified_at: string
+  remember_token: string,
+  created_at: string,
+  updated_at: string
+}
+
+interface authState {
+  user: user | null
 }
 
 // : authStateでstateの型を定義
@@ -20,14 +24,14 @@ const state: authState = {
   user: null
 }
 
-const getters = {}
+const getters = {
+  check: (state: authState) => !! state.user,
+  userName: (state: authState) => state.user ? state.user.name : ''
+}
 
 const mutations = {
-  setUser (state: authState, user: object) {
-    console.log(state.user)
-    console.log(user)
+  setUser (state: authState, user: user): void {
     state.user = user
-    console.log(state.user)
   }
 }
 
@@ -35,10 +39,20 @@ const mutations = {
 // https://vuex.vuejs.org/ja/api/#actions
 // : registerPostでAPIの渡すデータの型定義
 const actions = {
-  async register (context: { commit: Commit }, payload: registerPost) {
+  async register (
+    context: { commit: Commit },
+    payload: {name: string, email: string, password: string, password_confirmation: string }
+  ) {
     const response = await axios.post('/api/register', payload)
     console.log(response.data)
     // context.commitでmutationを呼ぶ
+    context.commit('setUser', response.data)
+  },
+  async login (
+    context: { commit: Commit },
+    payload: { email: string, password: string }
+    ) {
+    const response = await axios.post('/api/login', payload)
     context.commit('setUser', response.data)
   }
 }

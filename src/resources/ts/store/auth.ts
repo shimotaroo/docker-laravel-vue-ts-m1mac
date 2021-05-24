@@ -1,5 +1,5 @@
 // TypeScriptの場合この記述が必要
-import axios from "axios"
+import axios, { AxiosResponse } from "axios"
 
 // Vuexのライブラリからcommit型の型情報をimportする
 import { Commit } from "vuex"
@@ -61,6 +61,11 @@ const actions = {
   async logout (context: { commit: Commit }) {
     const response = await axios.post('/api/logout')
     context.commit('setUser', null)
+  },
+  async fetchLoginUser(context: { commit: Commit }) {
+    const response: AxiosResponse = await axios.get('/api/fetchLoginUser')
+    const user: user | null = response.data || null
+    context.commit('setUser', user)
   }
 }
 

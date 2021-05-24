@@ -20,10 +20,18 @@ import store from "./store"
 
 Vue.use(Vuetify);
 
-new Vue({
+// アプリ起動時、Vue インスタンス生成前に currentUser アクション呼び出すように関数化
+// importしているのでstoreが使える
+const createApp = async () => {
+  await store.dispatch('auth/fetchLoginUser')
+
+  new Vue({
     el: '#app',
     router,
     store,
     render: h => h(App),
     vuetify: new Vuetify()
-})
+  })
+}
+
+createApp()

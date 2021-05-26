@@ -64,8 +64,6 @@ export default Vue.extend({
     async login() {
       await this.$store.dispatch('auth/login', this.loginForm)
 
-      console.log(this.apiStatus)
-
       if (this.apiStatus) {
         // ログイン成功時にトップページに移動する
         this.$router.push('/')

@@ -23,4 +23,4 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 // ログインユーザーを取得
 // ログインしていない場合 Auth::user() は null を返すが、HTTP レスポンスに変換されるときに null は空文字に変わります。
 // HTTP メッセージはただの文字列なので null や false などのプログラミング言語的な表現は存在しない。
-Route::get('/user', fn() => Auth::user())->name('user');
+Route::get('/fetchLoginUser', fn() => Auth::user())->name('user');

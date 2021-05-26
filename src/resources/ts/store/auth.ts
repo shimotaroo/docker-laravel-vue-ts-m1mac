@@ -4,6 +4,9 @@ import axios, { AxiosResponse } from "axios"
 // Vuexのライブラリからcommit型の型情報をimportする
 import { Commit } from "vuex"
 
+// ステータスコード
+import { OK } from '../util'
+
 interface user {
   name: string,
   email: string,
@@ -16,12 +19,14 @@ interface user {
 }
 
 interface authState {
-  user: user | null
+  user: user | null,
+  apiStatus: boolean | null
 }
 
 // : authStateでstateの型を定義
 const state: authState = {
-  user: null
+  user: null,
+  apiStatus: null
 }
 
 const getters = {
@@ -32,6 +37,9 @@ const getters = {
 const mutations = {
   setUser (state: authState, user: user): void {
     state.user = user
+  },
+  setApiStatus (state: authState, apiStatus: boolean | null) {
+    state.apiStatus = apiStatus
   }
 }
 
@@ -54,8 +62,20 @@ const actions = {
     context: { commit: Commit },
     payload: { email: string, password: string }
     ) {
+    context.commit('setApiStatus', null)
     const response = await axios.post('/api/login', payload)
-    context.commit('setUser', response.data)
+      .catch(error => error.response || error)
+
+    // ログイン成功
+    if (response.status === OK) {
+      context.commit('setApiStatus', true)
+      context.commit('setUser', response.data)
+      return
+    }
+    // ログイン失敗
+    context.commit('setApiStatus', false)
+    // 別モジュール（ストア）のミューテーションを呼び出す場合は第三引数に{ root: true }を定義
+    context.commit('error/setCode', response.status, { root: true })
   },
   // ログアウト
   async logout (context: { commit: Commit }) {

@@ -18,3 +18,11 @@ export function getCookieValue(searchKey: string) {
 
   return val
 }
+
+/**
+ * レスポンスコードを定義
+ * ハードコードされるのを防ぐ
+ */
+export const OK = 200
+export const CREATED = 201
+export const INTERNAL_SERVER_ERROR = 500

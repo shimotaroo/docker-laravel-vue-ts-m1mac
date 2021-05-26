@@ -5,6 +5,7 @@ import VueRouter, { RouteConfig } from "vue-router"
 import Top from "./pages/Top.vue"
 import Register from "./pages/auth/Register.vue"
 import Login from "./pages/auth/Login.vue"
+import SystemError from './pages/errors/System.vue'
 
 //Vuex
 import store from './store'
@@ -39,6 +40,10 @@ const routes: Array<RouteConfig> = [
         next()
       }
     }
+  },
+  {
+    path: '/500',
+    component: SystemError
   }
 ]
 

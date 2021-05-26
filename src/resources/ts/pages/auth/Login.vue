@@ -55,12 +55,21 @@ export default Vue.extend({
       passwordRules: (value: string): boolean | string => /^[a-zA-Z0-9]{8,}$/i.test(value) || "8文字以上の半角英数字で入力してください"
     }
   },
+  computed: {
+    apiStatus (): boolean | null {
+       return this.$store.state.auth.apiStatus
+    }
+  },
   methods: {
     async login() {
-      console.log("OK");
       await this.$store.dispatch('auth/login', this.loginForm)
 
-      this.$router.push('/')
+      console.log(this.apiStatus)
+
+      if (this.apiStatus) {
+        // ログイン成功時にトップページに移動する
+        this.$router.push('/')
+      }
     }
   }
 })

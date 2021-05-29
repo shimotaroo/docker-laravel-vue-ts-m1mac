@@ -41,20 +41,26 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import { mapGetters, mapState } from 'vuex'
 
 export default Vue.extend({
   computed: {
-    isLogin() {
-      return this.$store.getters['auth/check']
-    },
-    userName() {
-      return this.$store.getters['auth/userName']
-    }
+    // isLogin () {
+    //   return this.$store.getters['auth/check']
+    // },
+    // apiStatus () {
+    //   return this.$store.state.auth.aapiStatus
+    // }
+    // 上記をmap関数で書く
+    ...mapState('auth', ['apiStatus']),
+    ...mapGetters({
+      isLogin: 'auth/check'
+    })
   },
   methods: {
     async logout() {
       await this.$store.dispatch('auth/logout')
-      if (this.$route.path !== '/') {
+      if (this.$route.path !== '/' && this.apiStatus) {
         this.$router.push('/')
       }
     }

@@ -22,12 +22,21 @@ window.axios = Axios
 // Ajaxリクエストであることを示すヘッダーを付与する
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
+// リクエストを送るときに実行する処理
 window.axios.interceptors.request.use(config => {
   // クッキーからトークンを取り出してヘッダーに添付する
   config.headers['X-XSRF-TOKEN'] = getCookieValue('XSRF-TOKEN')
 
   return config
 })
+
+// レスポンスを受けた後の処理を上書きする
+// これを書くことでstore/auth.tsのユーザー登録、ログイン、ログアウト、ログインユーザー取得で毎回
+// .catch(error => error.response || error)を書かなくて済む
+window.axios.interceptors.response.use(
+  response => response,
+  error => error.response || error
+)
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

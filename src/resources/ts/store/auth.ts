@@ -5,7 +5,7 @@ import axios, { AxiosResponse } from "axios"
 import { Commit } from "vuex"
 
 // ステータスコード
-import { OK } from '../util'
+import { OK, CREATED,UNPROCESSABLE_ENTITY } from '../util'
 
 interface user {
   name: string,
@@ -20,18 +20,21 @@ interface user {
 
 interface authState {
   user: user | null,
-  apiStatus: boolean | null
+  apiStatus: boolean | null,
+  loginErrorMessages: object | null
+  registerErrorMessages: object | null
 }
 
 // : authStateでstateの型を定義
 const state: authState = {
   user: null,
-  apiStatus: null
+  apiStatus: null,
+  loginErrorMessages: null,
+  registerErrorMessages: null
 }
 
 const getters = {
   check: (state: authState) => !! state.user,
-  userName: (state: authState) => state.user ? state.user.name : ''
 }
 
 const mutations = {
@@ -40,6 +43,12 @@ const mutations = {
   },
   setApiStatus (state: authState, apiStatus: boolean | null) {
     state.apiStatus = apiStatus
+  },
+  setRegisterErrorMessages (state: authState, registerErrorMessages: object | null) {
+    state.registerErrorMessages = registerErrorMessages
+  },
+  setLoginErrorMessages (state: authState, loginErrorMessages: object | null) {
+    state.loginErrorMessages = loginErrorMessages
   }
 }
 
@@ -52,19 +61,40 @@ const actions = {
     context: { commit: Commit },
     payload: {name: string, email: string, password: string, password_confirmation: string }
   ) {
+    // レスポンスステータスをリセット
+    context.commit('setApiStatus', null)
+    // APIにPOST
     const response = await axios.post('/api/register', payload)
-    console.log(response.data)
-    // context.commitでmutationを呼ぶ
-    context.commit('setUser', response.data)
+
+    // ユーザー登録成功
+    if (response.status === CREATED) {
+      // context.commitでmutationを呼ぶ
+      context.commit('setApiStatus', true)
+      context.commit('setUser', response.data)
+      return
+    }
+
+    // ユーザー登録失敗
+    context.commit('setApiStatus', false)
+    if (response.status === UNPROCESSABLE_ENTITY) {
+      // バリデーションエラーの場合はエラーメッセージをセット
+      context.commit('setRegisterErrorMessages', response.data.errors)
+    } else {
+      // 別モジュール（ストア）のミューテーションを呼び出す場合は第三引数に{ root: true }を定義
+      context.commit('error/setCode', response.status, { root: true })
+    }
   },
+
   // ログイン
   async login (
     context: { commit: Commit },
     payload: { email: string, password: string }
     ) {
+    // レスポンスステータスをリセット
     context.commit('setApiStatus', null)
+    // APIにPOST
     const response = await axios.post('/api/login', payload)
-      .catch(error => error.response || error)
+      // .catch(error => error.response || error) bootstrap.tsにまとめて定義したので不要
 
     // ログイン成功
     if (response.status === OK) {
@@ -74,18 +104,50 @@ const actions = {
     }
     // ログイン失敗
     context.commit('setApiStatus', false)
-    // 別モジュール（ストア）のミューテーションを呼び出す場合は第三引数に{ root: true }を定義
-    context.commit('error/setCode', response.status, { root: true })
+    if (response.status === UNPROCESSABLE_ENTITY) {
+      // バリデーションエラーの場合はエラーメッセージをセット
+      context.commit('setLoginErrorMessages', response.data.errors)
+    } else {
+      // 別モジュール（ストア）のミューテーションを呼び出す場合は第三引数に{ root: true }を定義
+      context.commit('error/setCode', response.status, { root: true })
+    }
   },
+
   // ログアウト
   async logout (context: { commit: Commit }) {
+    // レスポンスステータスをリセット
+    context.commit('setApiStatus', null)
+    // APIにPOST
     const response = await axios.post('/api/logout')
-    context.commit('setUser', null)
+
+    // 成功
+    if (response.status === OK) {
+      context.commit('setApiStatus', true)
+      context.commit('setUser', null)
+      return
+    }
+    // 失敗
+    context.commit('setApiStatus', false)
+    context.commit('error/setCode', response.status, { root: true })
   },
+
+  // ログインユーザー取得（ログインしてなかったらnull、してたらユーザーオブジェクト）
   async fetchLoginUser(context: { commit: Commit }) {
+    // レスポンスステータスをリセット
+    context.commit('setApiStatus', null)
+    // APIにGET
     const response: AxiosResponse = await axios.get('/api/fetchLoginUser')
     const user: user | null = response.data || null
-    context.commit('setUser', user)
+
+    // API成功
+    if (response.status === OK) {
+      context.commit('setApiStatus', true)
+      context.commit('setUser', user)
+      return
+    }
+    // API失敗
+    context.commit('setApiStatus', false)
+    context.commit('error/setCode', response.status, { root: true })
   }
 }
 

@@ -23,6 +23,7 @@ export function getCookieValue(searchKey: string) {
  * レスポンスコードを定義
  * ハードコードされるのを防ぐ
  */
-export const OK = 200
-export const CREATED = 201
-export const INTERNAL_SERVER_ERROR = 500
+export const OK = 200 // 成功
+export const CREATED = 201 //レコード作成成功
+export const UNPROCESSABLE_ENTITY = 422 // バリデーションエラー
+export const INTERNAL_SERVER_ERROR = 500 // システムエラー

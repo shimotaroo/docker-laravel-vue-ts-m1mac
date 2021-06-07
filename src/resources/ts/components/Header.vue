@@ -14,7 +14,7 @@
 
       <v-toolbar-items v-if="isLogin">
         <v-btn text>
-          <router-link to="/register">
+          <router-link to="/article">
             <v-icon class="mr-1">mdi-pencil-plus</v-icon>投稿する
           </router-link>
         </v-btn>

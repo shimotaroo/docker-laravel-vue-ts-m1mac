@@ -5,6 +5,9 @@ import VueRouter, { RouteConfig } from "vue-router"
 import Top from "./pages/Top.vue"
 import Register from "./pages/auth/Register.vue"
 import Login from "./pages/auth/Login.vue"
+import CreateForm from './pages/article/Create.vue'
+
+// ページコンポーネント（エラー画面）
 import SystemError from './pages/errors/System.vue'
 
 //Vuex
@@ -38,6 +41,18 @@ const routes: Array<RouteConfig> = [
         next('/')
       } else {
         next()
+      }
+    }
+  },
+  {
+    path: '/article',
+    component: CreateForm,
+    // ナビゲーションガード
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
       }
     }
   },

@@ -64,7 +64,7 @@ const actions = {
     // レスポンスステータスをリセット
     context.commit('setApiStatus', null)
     // APIにPOST
-    const response = await axios.post('/api/register', payload)
+    const response: AxiosResponse = await axios.post('/api/register', payload)
 
     // ユーザー登録成功
     if (response.status === CREATED) {
@@ -93,7 +93,7 @@ const actions = {
     // レスポンスステータスをリセット
     context.commit('setApiStatus', null)
     // APIにPOST
-    const response = await axios.post('/api/login', payload)
+    const response: AxiosResponse = await axios.post('/api/login', payload)
       // .catch(error => error.response || error) bootstrap.tsにまとめて定義したので不要
 
     // ログイン成功
@@ -118,7 +118,7 @@ const actions = {
     // レスポンスステータスをリセット
     context.commit('setApiStatus', null)
     // APIにPOST
-    const response = await axios.post('/api/logout')
+    const response: AxiosResponse = await axios.post('/api/logout')
 
     // 成功
     if (response.status === OK) {

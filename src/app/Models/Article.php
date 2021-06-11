@@ -16,4 +16,9 @@ class Article extends Model
         'summary',
         'url',
     ];
+
+    public function user ()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

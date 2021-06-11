@@ -17,6 +17,25 @@ class ArticleService
     }
 
     /**
+     * 一覧表示のため、全件取得
+     *
+     * @param Request $request
+     * @return Article
+     */
+    public function fetchArticles ()
+    {
+        try {
+            $articles = $this->article->with(['user'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(5);
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+
+        return $articles;
+    }
+
+    /**
      * 記事投稿
      *
      * @param Request $request

@@ -40,10 +40,11 @@ Route::get('/fetchLoginUser', fn() => Auth::user())->name('user');
 
 /*
 |--------------------------------------------------------------------------
-| 記事（投稿、詳細、編集、削除）
+| 記事（一覧表示、投稿、詳細、編集、削除）
 |--------------------------------------------------------------------------
 */
 
+Route::get('/articles', 'Article\FetchController@fetch')->name('article.fetch');
 Route::post('/article/store', 'Article\StoreController@store')->name('article.store');
 Route::get('/article/{id}', 'Article\ShowController@show')->name('article.show');
 Route::post('/article/{id}', 'Article\EditController@edit')->name('article.edit');

@@ -1,7 +1,7 @@
 // 変数定義
 $white-color:#fcfcfc;
 
-.v-toolbar__content {
+.v-toolbar__content, .v-btn {
   color : $white-color;
   a {
       color: $white-color !important;

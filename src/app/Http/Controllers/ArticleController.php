@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ArticleStoreRequest;
 use App\Services\ArticleService;
 use Illuminate\Http\Request;
 
@@ -27,6 +28,21 @@ class ArticleController extends Controller
 
         // 第二引数にステータスコードを渡すことでレスポンスのstatusプロパティを指定できる
         return response($response, 200);
+    }
+
+    /**
+     * 記事登録
+     *
+     * @param ArticleStoreRequest $request
+     * @param Response
+     */
+    public function store (ArticleStoreRequest $request)
+    {
+        $response = $this->articleService->storeArticle($request);
+
+        // 第二引数にステータスコードを渡すことでレスポンスのstatusプロパティを指定できる
+        // 作成なので201
+        return response($response, 201);
     }
 
     /**

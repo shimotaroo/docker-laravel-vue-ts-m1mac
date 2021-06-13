@@ -4,7 +4,18 @@
       <p class="mx-auto mt-10 mb-5 px-8 py-2 grey white--text rounded-pill">投稿詳細</p>
     </v-card-title>
     <v-card-text>
-      <v-icon class="mr-2 ml-5">mdi-account-edit</v-icon>{{ article.user.name }}
+      <v-row align="center">
+        <v-col>
+          <v-icon class="mr-2 ml-5">mdi-account-edit</v-icon>{{ article.user.name }}
+        </v-col>
+        <v-col v-if="isOwnArticle" class="text-right">
+            <v-btn class="text-center green py-4 px-8">
+            <router-link :to="`/article/${article.id}/edit`">
+                <v-icon class="mr-2">mdi-file-edit-outline</v-icon>編集する
+            </router-link>
+            </v-btn>
+        </v-col>
+      </v-row>
       <v-divider class="mt-5"></v-divider>
       <v-row class="mt-5">
         <v-col cols="4" class="text-right">タイトル</v-col>
@@ -55,6 +66,16 @@ export default Vue.extend({
   data (): DataInterface {
     return {
       article: null
+    }
+  },
+  computed: {
+    // ログインユーザーと記事のユーザーが一致しているかどうか（＝編集できるかどうかの判定用）
+    isOwnArticle (): Boolean {
+      if (!this.article ) {
+        return false
+      }
+      const authUser = this.$store.state.auth.user
+      return this.article.user.id === authUser.id
     }
   },
   async created () {

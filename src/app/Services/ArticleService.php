@@ -20,9 +20,9 @@ class ArticleService
      * 一覧表示のため、全件取得
      *
      * @param Request $request
-     * @return Array
+     * @return object
      */
-    public function fetchArticles (): array
+    public function fetchArticles (): object
     {
         try {
             $articles = $this->article

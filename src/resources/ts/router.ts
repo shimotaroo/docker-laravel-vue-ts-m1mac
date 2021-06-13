@@ -5,7 +5,8 @@ import VueRouter, { RouteConfig } from "vue-router"
 import Top from "./pages/Top.vue"
 import Register from "./pages/auth/Register.vue"
 import Login from "./pages/auth/Login.vue"
-import CreateForm from './pages/article/Create.vue'
+import ArticleCreateForm from './pages/article/Create.vue'
+import ArticleDetail from './pages/article/Detail.vue'
 
 // ページコンポーネント（エラー画面）
 import SystemError from './pages/errors/System.vue'
@@ -46,7 +47,7 @@ const routes: Array<RouteConfig> = [
   },
   {
     path: '/article',
-    component: CreateForm,
+    component: ArticleCreateForm,
     // ナビゲーションガード
     beforeEnter (to, from, next) {
       if (store.getters['auth/check']) {
@@ -55,6 +56,12 @@ const routes: Array<RouteConfig> = [
         next('/login')
       }
     }
+  },
+  {
+    path: '/article/:id',
+    component: ArticleDetail,
+    // props: trueとすることで:idの値がDetail.vueのpropsとして渡される
+    props: true
   },
   {
     path: '/500',

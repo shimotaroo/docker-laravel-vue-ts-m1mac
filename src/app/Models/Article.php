@@ -17,8 +17,21 @@ class Article extends Model
         'url',
     ];
 
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'deleted_at',
+    ];
+
     public function user ()
     {
         return $this->belongsTo('App\User');
+    }
+
+    public function category () {
+        return $this->belongsTo('App\Models\Category');
     }
 }

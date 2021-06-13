@@ -25,7 +25,7 @@ class ArticleStoreRequest extends FormRequest
     {
         return [
             'title' => ['required', 'string', 'max:100'],
-            'category_id' => ['required', 'numeric', 'size:1'],
+            'category_id' => ['required', 'numeric', 'digits:1'],
             'summary' => ['required', 'string', 'min:30', 'max:300'],
             'url' => ['required', 'active_url'],
         ];

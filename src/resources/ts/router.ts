@@ -7,6 +7,7 @@ import Register from "./pages/auth/Register.vue"
 import Login from "./pages/auth/Login.vue"
 import ArticleCreateForm from './pages/article/Create.vue'
 import ArticleDetail from './pages/article/Detail.vue'
+import ArticleEditForm from './pages/article/Edit.vue'
 
 // ページコンポーネント（エラー画面）
 import SystemError from './pages/errors/System.vue'
@@ -60,6 +61,12 @@ const routes: Array<RouteConfig> = [
   {
     path: '/article/:id',
     component: ArticleDetail,
+    // props: trueとすることで:idの値がDetail.vueのpropsとして渡される
+    props: true
+  },
+  {
+    path: '/article/:id/edit',
+    component: ArticleEditForm,
     // props: trueとすることで:idの値がDetail.vueのpropsとして渡される
     props: true
   },

@@ -1,13 +1,13 @@
 <template>
   <v-card max-width="680px" class="mx-auto mt-15">
     <v-card-title class="text-center">
-      <p class="mx-auto mt-10 mb-5 px-8 py-2 grey white--text rounded-pill">新規投稿</p>
+      <p class="mx-auto mt-10 mb-5 px-8 py-2 grey white--text rounded-pill">投稿編集</p>
     </v-card-title>
     <v-card-text>
       <!-- preventでデフォルトのフォーム送信の挙動をキャンセルしページリロードを抑制 -->
       <v-form @submit.prevent="store" class="mx-auto text-center">
         <!-- バリデーションメッセージ表示エリア -->
-        <div v-if="validationMessages">
+        <!-- <div v-if="validationMessages">
           <ul v-if="validationMessages.title" class="error-msg">
             <li v-for="msg in validationMessages.title" :key="msg">{{ msg }}</li>
           </ul>
@@ -20,7 +20,7 @@
           <ul v-if="validationMessages.url" class="error-msg">
             <li v-for="msg in validationMessages.url" :key="msg">{{ msg }}</li>
           </ul>
-        </div>
+        </div> -->
         <!-- 入力フォーム表示エリア -->
         <v-text-field
           label="タイトル"
@@ -102,39 +102,7 @@ export default Vue.extend({
       required: (value: string): boolean | string => !!value || "入力必須です",
       minLength30: (value: string): boolean | string => value.length >= 30 || "30文字以上で入力してください"
     }
-  },
-  methods: {
-    async store() {
-      // フォームのデータをまとめる
-      const createForm = {
-        title: this.title,
-        category_id: this.category_id,
-        summary: this.summary,
-        url: this.url
-      }
-
-      // Laravel（API）にPOSTして登録処理を実行
-      const response: AxiosResponse = await axios.post('/api/article/store', createForm)
-      if (response.status === UNPROCESSABLE_ENTITY) {
-        this.validationMessages = response.data.errors
-        return
-      }
-
-      if (response.status !== CREATED) {
-        this.$store.commit('error/setCode', response.status)
-        return
-      }
-
-      this.clearForm()
-      this.$router.push('/')
-    },
-    clearForm () {
-      this.title = ''
-      this.category_id = 1
-      this.summary = ''
-      this.url = ''
-    }
-  },
+  }
 })
 </script>
 

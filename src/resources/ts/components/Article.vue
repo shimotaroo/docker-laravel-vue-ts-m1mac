@@ -1,5 +1,5 @@
 <template>
-  <v-col>
+  <v-col :cols="cols">
     <v-card class="pa-2">
       <v-card-text>
         <v-icon class="mr-2 ml-5">mdi-account-edit</v-icon>{{ article.user.name }}
@@ -36,6 +36,10 @@ export default Vue.extend({
     article: {
       type: Object,
       required: false
+    },
+    cols: {
+      type: Number,
+      required: true
     }
   }
 })

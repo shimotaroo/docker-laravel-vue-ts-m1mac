@@ -44,4 +44,5 @@ class ArticleStoreRequest extends FormRequest
             'summary' => '概要',
             'url' => 'URL'
         ];
-    }}
+    }
+}

@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleStoreRequest;
+use App\Http\Requests\ArticleUpdateRequest;
 use App\Services\ArticleService;
-use Illuminate\Http\Request;
 
 class ArticleController extends Controller
 {
@@ -34,7 +34,7 @@ class ArticleController extends Controller
      * 記事登録
      *
      * @param ArticleStoreRequest $request
-     * @param Response
+     * @return Response
      */
     public function store (ArticleStoreRequest $request)
     {
@@ -49,10 +49,42 @@ class ArticleController extends Controller
      * 詳細画面のため、idに紐づくデータを1件取得
      *
      * @param String $id
+     * @return Response
      */
     public function show (string $id)
     {
         $response = $this->articleService->fetchArticleById($id);
         return response($response, 200);
+    }
+
+    /**
+     * 投稿稿編集処理
+     *
+     * @param ArticleUpdateRequest $request
+     * @param string $id
+     * @return Response
+     */
+    public function update (ArticleUpdateRequest $request, string $id)
+    {
+        if (!$id) {
+            return response(400);
+        }
+
+        $targetArticle = $this->articleService->fetchArticleById($id);
+
+        if (!$targetArticle) {
+            return response(404);
+        }
+
+        $response = $this->articleService->updateArticle($request, $targetArticle);
+
+        if (!$response) {
+            return response([
+                'result' => 'failed',
+                'message' => '編集に失敗しました'
+            ], 409);
+        }
+
+        return response(null, 204);
     }
 }

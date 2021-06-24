@@ -5,9 +5,9 @@
     </v-card-title>
     <v-card-text>
       <!-- preventでデフォルトのフォーム送信の挙動をキャンセルしページリロードを抑制 -->
-      <v-form @submit.prevent="store" class="mx-auto text-center">
+      <v-form @submit.prevent="update" class="mx-auto text-center">
         <!-- バリデーションメッセージ表示エリア -->
-        <!-- <div v-if="validationMessages">
+        <div v-if="validationMessages">
           <ul v-if="validationMessages.title" class="error-msg">
             <li v-for="msg in validationMessages.title" :key="msg">{{ msg }}</li>
           </ul>
@@ -20,19 +20,19 @@
           <ul v-if="validationMessages.url" class="error-msg">
             <li v-for="msg in validationMessages.url" :key="msg">{{ msg }}</li>
           </ul>
-        </div> -->
+        </div>
         <!-- 入力フォーム表示エリア -->
         <v-text-field
           label="タイトル"
           placeholder="例）Laravelのディレクトリ構成まとめ"
-          :rules="[required]"
           v-model="title"
+          :rules="[required]"
         >
         </v-text-field>
         <v-radio-group
           v-model="category_id"
-          :rules="[required]"
           row
+          :rules="[required]"
         >
           <v-radio
             v-for="item in categoryList"
@@ -45,13 +45,13 @@
           counter
           label="概要"
           placeholder="例）PHPのフレームワークであるLaravelのデフォルトのディレクトリ構成についてまとめました。"
-          :rules="[required, minLength30]"
           v-model="summary"
+          :rules="[required]"
         ></v-textarea>
         <v-text-field
           label="URL"
-          :rules="[required]"
           v-model="url"
+          :rules="[required, minLength30]"
         >
         </v-text-field>
         <v-btn
@@ -72,23 +72,31 @@ import Vue from 'vue'
 // TypeScriptの場合この記述が必要
 import axios, { AxiosResponse } from "axios"
 // ステータスコード
-import { CREATED,UNPROCESSABLE_ENTITY } from '../../util'
+import { OK, NO_CONTENT, UNPROCESSABLE_ENTITY } from '../../util'
 
-// dataプロパティの型定義
 interface DataInterface {
+  article: any,
   categoryList: object[],
   title: string,
   category_id: number,
   summary: string,
-  url: string
+  url: string,
   validationMessages: object | null,
   required: any,
   minLength30: any
 }
 
 export default Vue.extend({
-  data(): DataInterface {
+  // router.tsでprops: trueを定義したので:idをpropsとして渡せる
+  props: {
+    id: {
+      type: String,
+      required: true
+    }
+  },
+  data (): DataInterface {
     return {
+      article: null,
       categoryList: [
         {id: 1, label: 'Laravel'},
         {id: 2, label: 'PHP'},
@@ -101,6 +109,45 @@ export default Vue.extend({
       validationMessages: null,
       required: (value: string): boolean | string => !!value || "入力必須です",
       minLength30: (value: string): boolean | string => value.length >= 30 || "30文字以上で入力してください"
+    }
+  },
+  async created () {
+    const response: AxiosResponse = await axios.get(`/api/article/${this.id}`)
+
+    if (response.status !== OK) {
+      this.$store.commit('error/setCode', response.status)
+    }
+
+    this.article = response.data
+    this.category_id = this.article.category_id
+    this.title = this.article.title
+    this.summary = this.article.summary
+    this.url = this.article.url
+  },
+  methods: {
+    async update() {
+      // フォームのデータをまとめる
+      const editForm = {
+        title: this.title,
+        category_id: this.category_id,
+        summary: this.summary,
+        url: this.url
+      }
+
+      // Laravel（API）にPOSTして登録処理を実行
+      const response: AxiosResponse = await axios.put(`/api/article/${this.id}`, editForm)
+
+      if (response.status === UNPROCESSABLE_ENTITY) {
+        this.validationMessages = response.data.errors
+        return
+      }
+
+      if (response.status !== NO_CONTENT) {
+        this.$store.commit('error/setCode', response.status)
+        return
+      }
+
+      this.$router.push('/')
     }
   }
 })

@@ -47,5 +47,5 @@ Route::get('/fetchLoginUser', fn() => Auth::user())->name('user');
 Route::get('/articles', 'ArticleController@fetch')->name('article.fetch');
 Route::post('/article/store', 'ArticleController@store')->name('article.store');
 Route::get('/article/{id}', 'ArticleController@show')->name('article.show');
-Route::post('/article/{id}', 'ArticleController@edit')->name('article.edit');
+Route::put('/article/{id}', 'ArticleController@update')->name('article.update');
 Route::delete('/article/{id}', 'ArticleController@delete')->name('article.delete');

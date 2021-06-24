@@ -52,7 +52,7 @@ import axios, { AxiosResponse } from "axios"
 import { OK } from '../../util'
 
 interface DataInterface {
-  article: object | null
+  article: any
 }
 
 export default Vue.extend({
@@ -75,7 +75,12 @@ export default Vue.extend({
         return false
       }
       const authUser = this.$store.state.auth.user
-      return this.article.user.id === authUser.id
+
+      if (!authUser) {
+        return false
+      }
+
+      return this.article.user_id === authUser.id
     }
   },
   async created () {

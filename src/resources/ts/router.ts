@@ -5,9 +5,9 @@ import VueRouter, { RouteConfig } from "vue-router"
 import Top from "./pages/Top.vue"
 import Register from "./pages/auth/Register.vue"
 import Login from "./pages/auth/Login.vue"
-import ArticleCreateForm from './pages/article/Create.vue'
+import ArticleCreateForm from './pages/article/CreateForm.vue'
 import ArticleDetail from './pages/article/Detail.vue'
-import ArticleEditForm from './pages/article/Edit.vue'
+import ArticleEditForm from './pages/article/EditForm.vue'
 
 // ページコンポーネント（エラー画面）
 import SystemError from './pages/errors/System.vue'
@@ -68,7 +68,15 @@ const routes: Array<RouteConfig> = [
     path: '/article/:id/edit',
     component: ArticleEditForm,
     // props: trueとすることで:idの値がDetail.vueのpropsとして渡される
-    props: true
+    props: true,
+    // ナビゲーションガード
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path: '/500',

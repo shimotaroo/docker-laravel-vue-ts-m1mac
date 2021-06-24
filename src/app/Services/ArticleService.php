@@ -75,4 +75,22 @@ class ArticleService
 
         return $article;
     }
+
+    /**
+     * 投稿編集
+     *
+     * @param Request $request
+     * @param Article $article
+     * @return Article
+     */
+    public function updateArticle (Request $request, Article $article)
+    {
+        try {
+            $article->fill($request->all())->save();
+        } catch (\Exception $exception) {
+            throw $exception;
+        }
+
+        return $article;
+    }
 }

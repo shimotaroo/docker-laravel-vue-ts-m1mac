@@ -137,11 +137,13 @@ export default Vue.extend({
       // Laravel（API）にPOSTして登録処理を実行
       const response: AxiosResponse = await axios.put(`/api/article/${this.id}`, editForm)
 
+      // バリデーションエラー
       if (response.status === UNPROCESSABLE_ENTITY) {
         this.validationMessages = response.data.errors
         return
       }
 
+      // それ以外のエラー（システムエラー、更新処理エラー等）
       if (response.status !== NO_CONTENT) {
         this.$store.commit('error/setCode', response.status)
         return

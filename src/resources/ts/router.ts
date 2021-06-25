@@ -10,6 +10,7 @@ import ArticleDetail from './pages/article/Detail.vue'
 import ArticleEditForm from './pages/article/EditForm.vue'
 
 // ページコンポーネント（エラー画面）
+import ConflictError from './pages/errors/Conflict.vue'
 import SystemError from './pages/errors/System.vue'
 
 //Vuex
@@ -77,6 +78,10 @@ const routes: Array<RouteConfig> = [
         next('/login')
       }
     }
+  },
+  {
+    path: '/409',
+    component: ConflictError
   },
   {
     path: '/500',

@@ -24,7 +24,8 @@ export function getCookieValue(searchKey: string) {
  * ハードコードされるのを防ぐ
  */
 export const OK = 200 // 成功
-export const CREATED = 201 //レコード作成成功
-export const NO_CONTENT = 204 //更新成功時
+export const CREATED = 201 // レコード作成成功
+export const NO_CONTENT = 204 // 更新成功時
+export const CONFRICT = 409 // 更新エラー
 export const UNPROCESSABLE_ENTITY = 422 // バリデーションエラー
 export const INTERNAL_SERVER_ERROR = 500 // システムエラー

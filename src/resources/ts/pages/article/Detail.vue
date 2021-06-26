@@ -34,10 +34,10 @@
         <v-col cols="8">{{ article.created_at }}</v-col>
       </v-row>
     </v-card-text>
-    <v-card-actions class="mb-5">
+    <v-card-actions class="mt-5 mb-15">
       <v-btn class="text-center mx-auto blue py-4 px-8">
         <router-link to="/">
-        <v-icon class="mr-2">mdi-arrow-left</v-icon>戻る
+          <v-icon class="mr-2">mdi-arrow-left</v-icon>戻る
         </router-link>
       </v-btn>
     </v-card-actions>

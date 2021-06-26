@@ -11,7 +11,6 @@ interface user {
   name: string,
   email: string,
   password: string,
-  password_confirmation: string,
   email_verified_at: string
   remember_token: string,
   created_at: string,

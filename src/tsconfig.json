@@ -13,7 +13,10 @@
     "lib": [
       "es2016",
       "dom"
-    ]
+    ],
+    // 以下2行がないとnpm install -D moment時にTS1259: Module '"/var/www/html/node_modules/moment/ts3.1-typings/moment"' can only be default-imported using the 'allowSyntheticDefaultImports' flagとなる
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "./resources/ts/**/*"

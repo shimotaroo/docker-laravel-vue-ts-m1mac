@@ -18,6 +18,11 @@
             <v-icon class="mr-1">mdi-pencil-plus</v-icon>投稿する
           </router-link>
         </v-btn>
+        <v-btn text>
+          <router-link to="/user">
+            <v-icon class="mr-1">mdi-account-outline</v-icon>マイページ
+          </router-link>
+        </v-btn>
         <v-btn text @click="logout">
             <v-icon class="mr-1">mdi-account-arrow-right-outline</v-icon>ログアウト
         </v-btn>

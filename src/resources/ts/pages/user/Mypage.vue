@@ -24,7 +24,7 @@
         </router-link>
       </v-btn>
       <v-btn class="text-center mr-auto green py-4 px-8" width="160px">
-        <router-link to="/">
+        <router-link to="/user/edit">
           <v-icon class="mr-2">mdi-account-edit-outline</v-icon>編集する
         </router-link>
       </v-btn>
@@ -37,7 +37,6 @@ import Vue from 'vue'
 import moment from 'moment'
 
 interface DataInterface {
-  id: number | null,
   name: string,
   email: string
   updated_at: string
@@ -46,7 +45,6 @@ interface DataInterface {
 export default Vue.extend({
   data (): DataInterface {
     return {
-      id: null,
       name: '',
       email: '',
       updated_at: ''
@@ -55,13 +53,10 @@ export default Vue.extend({
   created () {
     const authUser = this.$store.state.auth.user
 
-    console.log(authUser)
-
     if (!authUser) {
       this.$router.push('/')
     }
 
-    this.id = authUser.id
     this.name = authUser.name
     this.email = authUser.email
     // Moment.jsでフォーマットする

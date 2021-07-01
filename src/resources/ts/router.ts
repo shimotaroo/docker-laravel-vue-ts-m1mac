@@ -19,6 +19,7 @@ import ArticleEditForm from './pages/article/EditForm.vue'
 
 // ユーザー
 import Mypage from './pages/user/Mypage.vue'
+import UserEditForm from './pages/user/EditForm.vue'
 
 // エラー画面
 import ConflictError from './pages/errors/Conflict.vue'
@@ -91,6 +92,17 @@ const routes: Array<RouteConfig> = [
   {
     path: '/user',
     component: Mypage,
+    beforeEnter (to, from, next) {
+      if (store.getters['auth/check']) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
+  },
+  {
+    path: '/user/edit',
+    component: UserEditForm,
     beforeEnter (to, from, next) {
       if (store.getters['auth/check']) {
         next()

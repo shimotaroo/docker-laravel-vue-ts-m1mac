@@ -49,3 +49,11 @@ Route::post('/article/store', 'ArticleController@store')->name('article.store');
 Route::get('/article/{id}', 'ArticleController@show')->name('article.show');
 Route::put('/article/{id}', 'ArticleController@update')->name('article.update');
 Route::delete('/article/{id}', 'ArticleController@delete')->name('article.delete');
+
+/*
+|--------------------------------------------------------------------------
+| ユーザー
+|--------------------------------------------------------------------------
+*/
+
+Route::put('/user', 'UserController@update')->name('user.update');

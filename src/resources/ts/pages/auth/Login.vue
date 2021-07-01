@@ -24,6 +24,7 @@
         <v-text-field
           v-model="loginForm.password"
           :rules="[required, passwordRules]"
+          type="password"
           label="パスワード"
           placeholder="********"
         ></v-text-field>

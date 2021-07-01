@@ -134,7 +134,7 @@ export default Vue.extend({
         url: this.url
       }
 
-      // Laravel（API）にPOSTして登録処理を実行
+      // Laravel（API）にPOSTして投稿更新処理を実行
       const response: AxiosResponse = await axios.put(`/api/article/${this.id}`, editForm)
 
       // バリデーションエラー

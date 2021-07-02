@@ -85,7 +85,6 @@ export default Vue.extend({
 
       // Laravel（API）にPOSTしてユーザー情報変更処理を実行
       const response: AxiosResponse = await axios.put(`/api/user`, editForm)
-      console.log(response)
 
       // バリデーションエラー
       if (response.status === UNPROCESSABLE_ENTITY) {

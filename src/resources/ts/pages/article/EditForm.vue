@@ -1,5 +1,5 @@
 <template>
-  <v-card max-width="680px" class="mx-auto mt-15">
+  <v-card max-width="680px" class="mx-auto mt-15" v-if="article">
     <v-card-title class="text-center">
       <p class="mx-auto mt-10 mb-5 px-8 py-2 grey white--text rounded-pill">投稿編集</p>
     </v-card-title>

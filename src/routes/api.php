@@ -38,6 +38,15 @@ Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
 // HTTP メッセージはただの文字列なので null や false などのプログラミング言語的な表現は存在しない。
 Route::get('/fetchLoginUser', fn() => Auth::user())->name('user');
 
+// 認証エラーは、サイトの閲覧中にセッションが切れるなどして認証していない状態で認証の必要な API にアクセスしたときに起こり得る
+// 認証エラーの場合はログインページへ移動して再度ログインをさせようと考えたが、ログインページへ移動したあと CSRF トークンがうまくリフレッシュされず、再ログインできない。
+// トークンリフレッシュAPI
+// トークンリフレッシュ
+Route::get('/reflesh-token', function (Request $request) {
+  $request->session()->regenerateToken();
+  return response()->json();
+});
+
 /*
 |--------------------------------------------------------------------------
 | 記事（一覧表示、投稿、詳細、編集、削除）

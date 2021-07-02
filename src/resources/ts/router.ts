@@ -24,6 +24,7 @@ import UserEditForm from './pages/user/EditForm.vue'
 // エラー画面
 import ConflictError from './pages/errors/Conflict.vue'
 import SystemError from './pages/errors/System.vue'
+import NotFound from './pages/errors/NotFound.vue'
 
 
 Vue.use(VueRouter)
@@ -118,6 +119,11 @@ const routes: Array<RouteConfig> = [
   {
     path: '/500',
     component: SystemError
+  },
+  // *は任意の意味（定義されたルート以外のパスは全てここになる）
+  {
+    path: '*',
+    component: NotFound
   }
 ]
 

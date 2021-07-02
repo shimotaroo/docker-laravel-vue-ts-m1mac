@@ -26,6 +26,8 @@ export function getCookieValue(searchKey: string) {
 export const OK = 200 // 成功
 export const CREATED = 201 // レコード作成成功
 export const NO_CONTENT = 204 // 更新成功時
+export const NOT_FOUND = 404 // リソースなし（APIから404が返される or ブラウザで存在しないパスにアクセス）
 export const CONFRICT = 409 // 更新エラー
+export const UNAUTHORIZED = 419 // 認証切れ（419 は正式には定義されていないコードで、Laravel が独自で使用している）
 export const UNPROCESSABLE_ENTITY = 422 // バリデーションエラー
 export const INTERNAL_SERVER_ERROR = 500 // システムエラー

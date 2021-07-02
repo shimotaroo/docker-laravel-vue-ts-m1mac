@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class UserUpdateRequest extends FormRequest
 {
@@ -23,10 +24,12 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules()
     {
+        // usersテーブルの主キーがidじゃなかったら、第4引数に主キーのカラム名を入れて以下のようにする
+        // $uniqueEmail = 'unique:users,email,'. Auth::id(), 'id';
+        $uniqueEmail = 'unique:users,email,'. Auth::id();
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
-            // 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:255', $uniqueEmail],
         ];
     }
 }

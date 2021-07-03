@@ -32,7 +32,14 @@ Vue.use(VueRouter)
 const routes: Array<RouteConfig> = [
   {
       path: "/",
-      component: Top
+      component: Top,
+      // クエリパラメータ page の値が、page という props として渡される
+      // propsに関数を指定する場合はその返り値がpropsとして渡される
+      // 関数の引数にはルート情報を表すroute
+      props: route => {
+        const page: any = route.query.page
+        return { page: /^[1-9][0-9]*$/.test(page) ? page * 1 : 1 }
+      }
   },
   {
     path: "/register",
@@ -127,8 +134,13 @@ const routes: Array<RouteConfig> = [
   }
 ]
 
+// VueRouterインスタンスを生成する時の処理
 const router = new VueRouter({
   mode: 'history',
+  // scrollBehaviorの使い方：https://router.vuejs.org/ja/guide/advanced/scroll-behavior.html
+  scrollBehavior () {
+    return { x: 0, y: 0 }
+  },
   routes
 })
 

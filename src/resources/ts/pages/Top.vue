@@ -1,5 +1,5 @@
 <template>
-  <v-container class="mt-15">
+  <v-container v-if="isfetchFinish" class="mt-15">
     <v-row>
       <Article
         v-for="(article, index) in articles"
@@ -8,6 +8,7 @@
         :article="article"
       />
     </v-row>
+    <Pagination :current-page="page" :last-page="lastPage" />
   </v-container>
 </template>
 
@@ -17,31 +18,51 @@ import Vue from 'vue'
 import axios, { AxiosResponse } from 'axios'
 // コンポーネント
 import Article from '../components/Article.vue'
+import Pagination from '../components/Pagination.vue'
 // ステータスコード
 import { OK } from '../util'
 
 interface DataInterface {
   articles: object[],
+  lastPage: number,
+  isfetchFinish: boolean
 }
 
 export default Vue.extend({
   components: {
-    Article
+    Article,
+    Pagination
   },
   data (): DataInterface {
     return {
       articles: [],
+      // Pagination.vueにpropsとして渡すデータ
+      lastPage: 0,
+      isfetchFinish: false
+    }
+  },
+  props: {
+    page: {
+      type: Number,
+      required: false,
+      // URLにクエリパラメータがない'/'の時は1にする
+      default: 1
     }
   },
   methods: {
     async fetchArticles () {
-      const response: AxiosResponse = await axios.get('api/articles')
+      this.isfetchFinish = false
+
+      const response: AxiosResponse = await axios.get(`api/articles/?page=${this.page}`)
 
       if (response.status !== OK) {
         this.$store.commit('error/setCode', response.status)
       }
 
       this.articles = response.data.data
+      this.lastPage = response.data.last_page
+
+      this.isfetchFinish = true
     }
   },
   // $route を監視してページが切り替わったときに fetchArticles が実行される

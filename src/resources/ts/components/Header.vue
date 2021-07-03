@@ -6,7 +6,7 @@
     >
       <v-toolbar-title>
         <router-link to="/">
-          Yanbaru Qiita
+          Yanbaru SPA
         </router-link>
       </v-toolbar-title>
 
